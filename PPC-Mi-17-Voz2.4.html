@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carta MI-17 - Planificación y Rendimiento</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#000;color:#e0e0e0;font-family:'Courier New',monospace;font-size:11px;padding:8px;display:flex;justify-content:center}
+.wrap{width:100%;max-width:800px;overflow-x:auto;background-size:100% auto;background-position:top center;background-repeat:no-repeat}
+table{width:100%;border-collapse:collapse;border:1px solid rgba(255,255,255,0.3);table-layout:fixed;background:transparent}
+td{border:1px solid rgba(255,255,255,0.3);padding:4px 6px;font-size:11px;font-family:'Courier New',monospace;word-wrap:break-word;overflow:hidden;background:transparent}
+input{width:100%;background:transparent;border:none;outline:none;color:#e0e0e0;text-align:center;font-family:'Courier New',monospace;font-size:11px}
+input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+input[type=number]{-moz-appearance:textfield}
+.lbl{background:rgba(255,255,255,0.05);font-weight:500}
+.inp{background:rgba(0,0,0,0.25)}
+.val{background:rgba(0,0,0,0.25);text-align:center}
+.hdr{background:rgba(59,130,246,0.2);color:#60a5fa;font-weight:bold;text-align:center}
+.sec{background:rgba(37,99,235,0.7);color:#fff;font-weight:bold;text-align:center;padding:6px}
+.pzu{text-align:center;cursor:pointer;user-select:none;font-weight:bold;font-size:11px;transition:background 0.2s}
+.pzu-off{background:rgba(255,255,255,0.05);color:#888}
+.pzu-on{background:rgba(220,38,38,0.9);color:#fff}
+.bold-primary{font-weight:bold;color:#60a5fa}
+.bg-red{background:rgba(220,38,38,0.9);color:#fff;font-weight:bold}
+.bg-yellow{background:rgba(234,179,8,0.9);color:#1a1a00;font-weight:bold}
+.btn-row{text-align:center;margin-top:12px;display:flex;justify-content:center;gap:8px;flex-wrap:wrap}
+.btn-row button{padding:10px 24px;border:none;border-radius:6px;font-weight:bold;font-size:14px;cursor:pointer}
+@media print{*{-webkit-print-color-adjust:exact!important;print-color-adjust:exact!important;color-adjust:exact!important}.no-print{display:none!important}body{background:#fff;color:#000}.wrap{background-image:url('./fondo_mi17.png');background-size:100% auto;background-position:top center}td{border-color:#333}.lbl{background:rgba(238,238,238,0.3)}.hdr{background:rgba(204,204,238,0.3);color:#003}.sec{background:rgba(0,0,51,0.7);color:#fff}.val:not(.bg-red):not(.bg-yellow),.inp:not(.bg-red):not(.bg-yellow){background:rgba(255,255,255,0.2)}.pzu-on{background:#c00;color:#fff}.bg-red{background:#dc2626!important;color:#fff!important}.bg-yellow{background:#eab308!important;color:#1a1a00!important}input{color:#000}}
+body.day-mode{background-color:#ebe5d6;color:#1a1a1a}
+body.day-mode .wrap{background-image:url('./fondo_mi17.png')}
+body.day-mode td{border-color:rgba(160,148,120,0.5)}
+body.day-mode .lbl{background:rgba(214,206,184,0.35);color:#1a1a1a}
+body.day-mode .inp{background:rgba(245,240,228,0.25)}
+body.day-mode .val{background:rgba(245,240,228,0.25);color:#1a1a1a}
+body.day-mode .hdr{background:rgba(200,216,232,0.35);color:#002244}
+body.day-mode .sec{background:rgba(0,51,102,0.7);color:#fff}
+body.day-mode .pzu-off{background:rgba(214,206,184,0.3);color:#666}
+body.day-mode .bold-primary{color:#002288}
+body.day-mode input{color:#1a1a1a}
+body.day-mode .bg-yellow{background:rgba(212,168,0,0.9);color:#1a1a00}
+body.day-mode .bg-red{background:rgba(198,40,40,0.9);color:#fff}
+body.day-mode .pzu-on{background:rgba(198,40,40,0.9);color:#fff}
+</style>
+
+<style>
+	@font-face {
+		font-family: 'CameraPlainVariable';
+		src: url('https://cdn.gpteng.co/mcp-widgets/v1/fonts/CameraPlainVariable.woff2') format('woff2');
+		font-weight: 100 900;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	#lovable-badge {
+		--badge-bg: #1b1b1b;
+		--badge-text: #c5c1b9;
+		--badge-text-hover: #dcdad5;
+		--badge-radius: 6px;
+		--badge-padding: 8px;
+		--badge-gap: 6px;
+		--badge-shadow: 
+			0 0 0 1px rgba(0, 0, 0, 0.88),
+			0 1px 0 0 rgba(0, 0, 0, 0.04),
+			0 2px 2px -1px rgba(0, 0, 0, 0.08),
+			0 4px 4px -2px rgba(0, 0, 0, 0.08),
+			0 8px 8px -4px rgba(0, 0, 0, 0.08),
+			0 16px 16px -8px rgba(0, 0, 0, 0.08);
+		--badge-transition-duration: 0.2s;
+		--badge-transition-easing: cubic-bezier(0.16, 1, 0.32, 1);
+		--focus-color: #575ECF;
+		--focus-offset: 2px;
+		--focus-width: 2px;
+		
+		position: fixed;
+		bottom: 12px;
+		right: 12px;
+		height: 24px;
+		display: flex;
+		align-items: center;
+		z-index: 1000000;
+		background-color: var(--badge-bg);
+		color: var(--badge-text);
+		border-radius: var(--badge-radius);
+		box-shadow: var(--badge-shadow);
+		font-size: 12px;
+		font-family: CameraPlainVariable, "CameraPlainVariable Fallback", -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+		font-weight: 400 !important;
+		text-transform: none !important;
+		font-feature-settings: normal !important;
+		transform: translateZ(0);
+		will-change: transform, opacity;
+	}
+
+	#lovable-badge-cta {
+		display: flex;
+		align-items: center;
+		gap: var(--badge-gap);
+		padding: 0 var(--badge-padding);
+		height: 100%;
+		color: inherit;
+		text-decoration: none;
+		white-space: nowrap;
+		border-radius: var(--badge-radius) 0 0 var(--badge-radius);
+		transition: 
+			background-color var(--badge-transition-duration) ease,
+			color var(--badge-transition-duration) ease,
+			transform 0.1s ease;
+	}
+
+	#lovable-badge-cta:hover {
+		background: rgba(255, 255, 255, 0.04);
+		color: var(--badge-text-hover);
+	}
+
+	#lovable-badge-cta:active {
+		transform: scale(0.98);
+	}
+
+	#lovable-badge-cta:focus {
+		outline: none;
+	}
+
+	#lovable-badge-cta:focus-visible {
+		outline: var(--focus-width) solid var(--focus-color);
+		outline-offset: var(--focus-offset);
+		z-index: 1;
+	}
+
+	#lovable-badge-text {
+		line-height: 1;
+	}
+
+	#lovable-badge-divider {
+		width: 1px;
+		height: 24px;
+		background-color: rgba(255, 255, 255, 0.04);
+		flex-shrink: 0;
+	}
+
+	#lovable-badge-close {
+		width: 24px;
+		height: 24px;
+		min-width: 24px;
+		min-height: 24px;
+		cursor: pointer;
+		background: none;
+		border: none;
+		padding: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		border-radius: 0 var(--badge-radius) var(--badge-radius) 0;
+		flex-shrink: 0;
+		transition: 
+			background-color var(--badge-transition-duration) ease,
+			transform 0.1s ease;
+	}
+
+	#lovable-badge-close:hover {
+		background: rgba(255, 255, 255, 0.04);
+	}
+
+	#lovable-badge-close:active {
+		transform: scale(0.92);
+	}
+
+	#lovable-badge-close:focus {
+		outline: none;
+	}
+
+	#lovable-badge-close:focus-visible {
+		outline: var(--focus-width) solid var(--focus-color);
+		outline-offset: calc(var(--focus-offset) * -1);
+		z-index: 1;
+	}
+
+	#lovable-badge-close svg path {
+		fill: var(--badge-text);
+		transition: fill var(--badge-transition-duration) ease;
+	}
+
+	#lovable-badge-close:hover svg path {
+		fill: var(--badge-text-hover);
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		#lovable-badge-cta,
+		#lovable-badge-close,
+		#lovable-badge-close svg path {
+			transition: none;
+		}
+		
+		#lovable-badge-cta:active,
+		#lovable-badge-close:active {
+			transform: none;
+		}
+	}
+
+	@media (prefers-contrast: high) {
+		#lovable-badge {
+			--badge-bg: #000;
+			--badge-text: #fff;
+			--badge-text-hover: #fff;
+			border: 2px solid currentColor;
+		}
+		
+		#lovable-badge-cta:focus-visible,
+		#lovable-badge-close:focus-visible {
+			outline-width: 3px;
+		}
+	}
+</style>
+<meta name="twitter:image" content="https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/05911b8a-8647-4cc4-a13c-2c9bc41a58b6/id-preview-00bb2699--eef94533-9b5a-421e-b022-a3fdc61eb3e1.lovable.app-1774935541051.png" /></head>
+<body class="day-mode">
+<div class="wrap">
+<div class="no-print btn-row" style="margin-top:0;margin-bottom:8px">
+<button onclick="window.print()" style="background:#2563eb;color:#fff">🖨 Imprimir</button>
+  <button onclick="document.body.classList.toggle('day-mode')" style="background:#444;color:#fff">☀/🌙 Diurno / Nocturno</button>
+  <button onclick="startVoiceInput()" id="btnVoz" style="background:#16a34a;color:#fff">🎤 Ingresar por voz</button>
+</div>
+<!-- ===== PANEL DE VOZ ===== -->
+<div id="voicePanel" style="display:none;margin-bottom:8px;border:1px solid rgba(255,255,255,0.3);border-radius:8px;padding:12px;background:rgba(0,0,0,0.6);font-family:'Courier New',monospace;font-size:12px">
+  <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+    <span id="voiceDot" style="width:10px;height:10px;border-radius:50%;background:#555;display:inline-block"></span>
+    <span id="voiceStatus" style="color:#aaa">En espera</span>
+  </div>
+  <div style="margin-bottom:6px"><span style="color:#888">Texto reconocido:</span> <span id="voiceText" style="color:#60a5fa">—</span></div>
+  <div><span style="color:#888">Resultado:</span> <span id="voiceResult" style="color:#4ade80">—</span></div>
+</div>
+<table>
+<colgroup><col style="width:24%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:14%"><col style="width:7%"><col style="width:13%"></colgroup>
+<tbody id="tbl"></tbody>
+</table>
+<!-- ===== POPUP DE IMAGEN ===== -->
+<div id="imgPopup" onclick="this.style.display='none'" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.85);z-index:9999;cursor:pointer;justify-content:center;align-items:center">
+<img id="imgPopupSrc" src="" style="max-width:92%;max-height:92%;border-radius:8px;box-shadow:0 0 30px rgba(0,0,0,0.6)">
+<span style="position:absolute;top:16px;right:24px;color:#fff;font-size:32px;font-weight:bold;cursor:pointer">&times;</span>
+</div>
+</div>
+<style>
+body.day-mode #voicePanel{background:rgba(230,225,210,0.9);border-color:#b0a890}
+body.day-mode #voiceText{color:#002288}
+body.day-mode #voiceResult{color:#166534}
+body.day-mode #voiceStatus{color:#555}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:0.3}}
+.dot-listening{background:#ef4444!important;animation:pulse-dot 1s infinite}
+@keyframes voice-flash{0%,100%{color:inherit;background:inherit}50%{color:#000;background:rgba(255,255,255,0.85)}}
+body.day-mode .voice-flash-active input{animation:voice-flash-day 0.8s infinite ease-in-out}
+@keyframes voice-flash-day{0%,100%{color:inherit;background:inherit}50%{color:#fff;background:rgba(0,0,0,0.8)}}
+.voice-flash-active input{animation:voice-flash 0.8s infinite ease-in-out}
+</style>
+<script>
+/* === Constante central de rutas de imágenes === */
+var IMG = {
+  fondo: './fondo_mi17.png',
+  presionApu: './presion_apu.png',
+  marchaLenta: './marcha_lenta.png',
+  tempAceleracion: './temp_aceleracion.png',
+  regimenes: './regimenes.png',
+  pesoMaxIge: './peso_max_ige.png',
+  pesoMaxOge: './peso_max_oge.png',
+  fallaMotor: './falla_de_un_motor.png',
+  fallaMotorRuta: './falla_de_un_motor_en_ruta.png'
+};
+var temperatures=[0,5,10,15,20,25,30,35,40,45,50];
+var altitudes=[0,656,1312,1969,2625,3281,3937,4593,5249,5906,6562,7218,7874,8530,9186,9843,10499,11155,11811,12467,13123,13780,14436,15092,15748,16404,17060,17717,18373,19029,19685];
+var maxWeightTable=[[13000,13000,13000,13000,13000,13000,13000,13000,13000,12700,12100],[13000,13000,13000,13000,13000,13000,13000,13000,13000,12400,11850],[13000,13000,13000,13000,13000,13000,13000,13000,12600,11900,11600],[13000,13000,13000,13000,13000,13000,13000,12800,12350,11700,11200],[13000,13000,13000,13000,13000,13000,12900,12500,12000,11350,10850],[13000,13000,13000,13000,13000,13000,12700,12200,11650,11100,10600],[13000,13000,13000,13000,13000,13000,12450,11800,11400,10900,10450],[13000,13000,13000,13000,13000,12650,12150,11600,11200,10700,10200],[13000,12950,12950,12950,12750,12300,11800,11400,10800,10350,9950],[12900,12850,12850,12750,12400,11900,11400,11050,10700,10100,9750],[12800,12750,12750,12500,12100,11650,11250,10800,10400,9950,9550],[12600,12600,12600,12200,11800,11350,10900,10500,10050,9500,9250],[12500,12450,12300,11900,11500,11050,10650,10250,9800,9350,9000],[12300,12300,12050,11600,11200,10750,10400,9900,9500,9000,8600],[12150,12100,11700,11350,10900,10500,10050,9700,9250,8800,8400],[12000,11900,11500,11000,10650,10250,9850,9450,9000,8600,8200],[11850,11600,11100,10700,10350,9900,9550,9150,8750,8350,8000],[11650,11300,10900,10500,10050,9700,9350,8900,8500,8100,0],[11400,11000,10600,10200,9850,9450,9100,8700,8350,7800,0],[11100,10750,10350,9950,9600,9200,8900,8500,8100,0,0],[10800,10500,10100,9700,9400,9000,8700,8300,7950,0,0],[10500,10200,9850,9450,9150,8800,8450,8100,7750,0,0],[10350,10000,9650,9250,8950,8550,8250,7900,0,0,0],[10100,9800,9400,9000,8700,8300,8000,0,0,0,0],[9900,9500,9150,8750,8450,8050,7800,0,0,0,0],[9600,9300,8900,8550,8200,7800,0,0,0,0,0],[9350,9000,8700,8300,8000,0,0,0,0,0,0],[9000,8700,8350,8000,0,0,0,0,0,0,0],[8700,8450,8050,0,0,0,0,0,0,0,0],[8500,8200,0,0,0,0,0,0,0,0,0],[8150,7850,0,0,0,0,0,0,0,0,0]];
+var maxWeightIGETable=[[13000,13000,13000,13000,13000,13000,13000,13000,12900,12350,11800],[13000,13000,13000,13000,13000,13000,13000,13000,12700,12130,11640],[13000,13000,13000,13000,13000,13000,13000,12820,12500,11910,11480],[13000,13000,13000,13000,13000,13000,12960,12630,12300,11690,11320],[13000,13000,13000,13000,13000,13000,12780,12440,12100,11470,11160],[13000,13000,13000,13000,13000,12950,12600,12250,11900,11450,11000],[13000,13000,13000,13000,13000,12800,12440,12070,11700,11230,10800],[13000,13000,13000,13000,12980,12620,12280,11890,11500,11010,10600],[13000,13000,13000,13000,12800,12450,12120,11730,11340,10850,10360],[13000,13000,13000,13000,12650,12290,11960,11550,11170,10670,10180],[13000,13000,13000,12850,12500,12150,11800,11400,11000,10550,10100],[13000,13000,12950,12600,12280,11940,11580,11180,10800,10320,9900],[13000,13000,12720,12350,12060,11730,11360,10960,10600,10090,9700],[13000,12950,12550,12100,11840,11510,11140,10740,10400,9860,9500],[13000,12750,12340,11850,11620,11300,10920,10520,10200,9630,9300],[13000,12600,12200,11800,11400,11050,10700,10350,10000,9550,9100],[12800,12380,12000,11550,11200,10850,10500,10150,9800,9320,8900],[12600,12160,11800,11350,11000,10650,10300,9950,9600,9090,8700],[12400,11940,11600,11150,10800,10450,10100,9750,9400,8860,8500],[12200,11720,11400,10950,10600,10250,9900,9550,9200,8630,8300],[12000,11600,11200,10800,10400,10050,9700,9350,9000,8550,8100],[11800,11380,11000,10560,10220,9850,9520,9180,8820,8350,7920],[11600,11160,10800,10320,10040,9650,9340,9010,8640,8150,7740],[11400,10940,10600,10080,9860,9450,9160,8840,8460,7950,7560],[11200,10720,10400,9840,9680,9250,8980,8670,8280,7750,7380],[11000,10600,10200,9850,9500,9150,8800,8450,8100,7650,7200],[10800,10380,10020,9630,9320,8950,8620,8240,7920,7430,7020],[10600,10160,9840,9410,9140,8750,8440,8030,7740,7210,6840],[10400,9940,9660,9190,8960,8550,8260,7820,7560,6990,6660],[10200,9720,9480,8970,8780,8350,8080,7610,7380,6770,6480],[10000,9650,9300,8950,8600,8250,7900,7550,7200,6750,6300]];
+var apuTemps=[5,10,15,20,25,30,35,40,45,50];
+var apuAltitudes=[0,656,1312,1969,2625,3281,3937,4593,5249,5906,6562,7218,7874,8530,9186,9843,10499,11155,11811,12467,13123];
+var apuPressureTable=[[1.94,1.92,1.90,1.87,1.86,1.83,1.80,1.78,1.76,1.75],[1.91,1.89,1.86,1.84,1.84,1.80,1.77,1.75,1.73,1.73],[1.88,1.86,1.83,1.81,1.78,1.76,1.74,1.72,1.70,1.68],[1.85,1.83,1.78,1.78,1.75,1.73,1.71,1.69,1.66,1.64],[1.82,1.79,1.75,1.75,1.73,1.70,1.68,1.66,1.63,1.62],[1.79,1.76,1.72,1.72,1.68,1.67,1.65,1.63,1.60,1.57],[1.76,1.73,1.69,1.69,1.65,1.64,1.62,1.59,1.57,1.55],[1.72,1.70,1.66,1.66,1.63,1.61,1.59,1.56,1.54,1.51],[1.69,1.67,1.63,1.62,1.58,1.58,1.56,1.53,1.51,1.47],[1.66,1.64,1.60,1.59,1.55,1.55,1.52,1.50,1.48,1.44],[1.63,1.61,1.57,1.56,1.53,1.52,1.49,1.47,1.45,1.40],[1.60,1.58,1.53,1.53,1.48,1.49,1.46,1.44,1.42,1.37],[1.57,1.55,1.50,1.50,1.45,1.45,1.43,1.41,1.39,1.34],[1.54,1.52,1.47,1.47,1.42,1.42,1.40,1.38,1.35,1.32],[1.51,1.48,1.43,1.44,1.38,1.39,1.37,1.35,1.32,1.27],[1.48,1.45,1.40,1.41,1.35,1.36,1.34,1.32,1.29,1.25],[1.45,1.42,1.38,1.38,1.32,1.33,1.31,1.28,1.26,1.22],[1.41,1.39,1.35,1.35,1.30,1.30,1.28,1.25,1.23,1.18],[1.38,1.36,1.33,1.31,1.27,1.27,1.25,1.22,1.20,1.16],[1.35,1.33,1.29,1.28,1.24,1.24,1.21,1.19,1.17,1.14],[1.32,1.30,1.25,1.25,1.20,1.21,1.18,1.16,1.14,1.10]];
+var tMaxArranqueTemps=[-10,0,10,20,30,40,50];
+var tMaxArranqueValues=[720,740,765,780,780,780,780];
+var tPruebaAceleracionTemps=[-10,-5,0,5,10,15,20,25,30,35,40,45];
+var tPruebaAceleracionValues=[760,780,800,820,840,860,880,900,920,940,950,950];
+var rpmMaxTemps=[0,5,10,15,20,25,30,35,40];
+var rpmMaxTable={cruceroII:[90,91,91.5,92.5,93,93.5,94.5,95,95.5],cruceroI:[92.5,93,94,94.5,95.5,96,96.5,97.5,97.5],nominal:[93.5,94.5,95,95.5,96.5,97,98,98.5,99],despegue:[96,96.5,97.5,98,99,99.5,100.5,101.15,101.15],emergencia:[97,98,98.5,99.5,100,100.5,101.15,101.15,101.15]};
+var rpmMinTable={cruceroII:[89,90,90.5,91.5,92,92.5,93.5,94,94.5],cruceroI:[90,91,91.5,92.5,93,93.5,94.5,95,95.5],nominal:[92.5,93,94,94.5,95.5,96,96.5,97.5,97.5],despegue:[93.5,94.5,95,95.5,96.5,97,98,98.5,99],emergencia:[96,96.5,97.5,98,99,99.5,100.5,101.15,101.15]};
+var rpmVacioTemps=[-10,0,10,20,30,40,50];
+var rpmVacioMax=[75.5,77,78.2,78.4,78.8,79,79.5];
+var rpmVacioMin=[69,71,72,72.2,72.5,73,73.3];
+var oeiTemperatures=[-10,-5,0,5,10,15,20,25,30,35,40,45];
+var oeiAltitudes=[0,656,1312,1968,2624,3280,3936,4592,5248,5904,6560,7216,7872,8528,9184,9840,10496,11152,11808,12464,13120];
+var oeiMaxWeightTable=[[13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000],[13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000],[13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,12700],[13000,13000,13000,13000,13000,13000,13000,13000,13000,13000,12800,12400],[13000,13000,13000,13000,13000,13000,13000,13000,13000,12800,12450,12100],[12950,13000,13000,13000,13000,13000,13000,13000,13000,12550,12200,11800],[12750,12850,12950,13000,13000,13000,13000,13000,12600,12200,11800,11400],[12650,12750,12850,12950,13000,13000,13000,12650,12300,11900,11500,11100],[12550,12650,12750,12850,12950,13000,12800,12400,12000,11600,11200,10800],[12450,12550,12650,12750,12850,12900,12500,12100,11750,11300,10950,10600],[12350,12450,12550,12650,12750,12600,12200,11800,11400,11000,10650,10400],[12200,12300,12400,12500,12600,12200,11900,11450,11150,10700,10400,10400],[12100,12200,12300,12350,12200,11850,11500,11100,10750,10400,10400,10400],[11950,12050,12150,12200,11900,11500,11150,10750,10400,10400,10400,10400],[11850,11950,12050,11900,11500,11150,10800,10400,10400,10400,10400,10400],[11700,11800,11900,11550,11200,10850,10500,10400,10400,10400,10400,10400],[11500,11650,11500,11200,10800,10550,10400,10400,10400,10400,10400,10400],[11350,11400,11100,10800,10550,10400,10400,10400,10400,10400,10400,10400],[11200,11000,10800,10500,10400,10400,10400,10400,10400,10400,10400,10400],[10900,10600,10400,10400,10400,10400,10400,10400,10400,10400,10400,10400],[10600,10400,10400,10400,10400,10400,10400,10400,10400,10400,10400,10400]];
+var FUEL_DENSITY=0.80,FUEL_CONSUMPTION_LPH=800;
+var pzu1=false,pzu2=false;
+
+function ceilingLookup(alt,temp,altArr,tempArr,table){var ai=altArr.length-1;for(var i=0;i<altArr.length;i++){if(altArr[i]>=alt){ai=i;break;}}var ti=tempArr.length-1;for(var i=0;i<tempArr.length;i++){if(tempArr[i]>=temp){ti=i;break;}}return table[ai][ti];}
+function ceilLookup1D(temp,temps,vals){for(var i=0;i<temps.length;i++){if(temps[i]>=temp)return vals[i];}return vals[vals.length-1];}
+function parseTime(t){var p=t.split(":");return(parseInt(p[0])||0)+(parseInt(p[1])||0)/60;}
+function formatHMS(h){var hh=Math.floor(h);var mm=Math.floor((h-hh)*60);var ss=Math.round(((h-hh)*60-mm)*60);return String(hh).padStart(2,'0')+':'+String(mm).padStart(2,'0')+':'+String(ss).padStart(2,'0');}
+
+var plan={fecha:new Date().toLocaleDateString(),matricula:'',mision:'',tripulacion:'',hDesp:'0:00',combustibleLts:0,pax:0,carga:0,hAter:'0:00',temp1:0,temp2:0,alt1:0,alt2:0,pesoBasico1:0,pesoBasico2:0,pesoTripEquipo1:0,pesoTripEquipo2:0,distanciaMN:120,bingo:0,altRuta:0,tempRuta:0};
+
+function recalc(){
+  var hDespHrs=parseTime(plan.hDesp),hAterHrs=parseTime(plan.hAter),ttVueloHrs=Math.max(0,hAterHrs-hDespHrs);
+  var combDesp=Math.round(plan.combustibleLts),combReq=Math.round(ttVueloHrs*FUEL_CONSUMPTION_LPH)+300,joker=plan.bingo+200;
+  var combAter=plan.combustibleLts-Math.round(ttVueloHrs*FUEL_CONSUMPTION_LPH);
+  var autonomiaHrs=Math.max(0,(plan.combustibleLts-300))/FUEL_CONSUMPTION_LPH;
+  var pesoComb1=Math.round(plan.combustibleLts*FUEL_DENSITY),pesoComb2=Math.round(combAter*FUEL_DENSITY);
+  var pesoOp1=plan.pesoBasico1+plan.pesoTripEquipo1,pesoOp2=plan.pesoBasico2+plan.pesoTripEquipo2;
+  var pesoCargaPax=plan.carga+plan.pax*100;
+  var pesoTotal1=pesoOp1+pesoComb1+pesoCargaPax,pesoTotal2=pesoOp2+pesoComb2+pesoCargaPax;
+  var rawOGE1=ceilingLookup(plan.alt1,plan.temp1,altitudes,temperatures,maxWeightTable),rawOGE2=ceilingLookup(plan.alt2,plan.temp2,altitudes,temperatures,maxWeightTable);
+  var maxOGE1=rawOGE1?(pzu1?rawOGE1-200:rawOGE1):0,maxOGE2=rawOGE2?(pzu2?rawOGE2-200:rawOGE2):0;
+  var rawIGE1=ceilingLookup(plan.alt1,plan.temp1,altitudes,temperatures,maxWeightIGETable),rawIGE2=ceilingLookup(plan.alt2,plan.temp2,altitudes,temperatures,maxWeightIGETable);
+  var maxIGE1=rawIGE1?(pzu1?rawIGE1-200:rawIGE1):0,maxIGE2=rawIGE2?(pzu2?rawIGE2-200:rawIGE2):0;
+  var apu1=ceilingLookup(plan.alt1,plan.temp1,apuAltitudes,apuTemps,apuPressureTable),apu2=ceilingLookup(plan.alt2,plan.temp2,apuAltitudes,apuTemps,apuPressureTable);
+  var tMax1=ceilLookup1D(plan.temp1,tMaxArranqueTemps,tMaxArranqueValues),tMax2=ceilLookup1D(plan.temp2,tMaxArranqueTemps,tMaxArranqueValues);
+  var tPrueba1=ceilLookup1D(plan.temp1,tPruebaAceleracionTemps,tPruebaAceleracionValues),tPrueba2=ceilLookup1D(plan.temp2,tPruebaAceleracionTemps,tPruebaAceleracionValues);
+  var rc=function(t,tbl){return ceilLookup1D(t,rpmMaxTemps,tbl);};
+  var tiempoDistHrs=plan.distanciaMN/100,tH=Math.floor(tiempoDistHrs),tM=Math.floor((tiempoDistHrs-tH)*60),tS=Math.round(((tiempoDistHrs-tH)*60-tM)*60);
+  var tiempoDistF=tH+':'+String(tM).padStart(2,'0')+':'+String(tS).padStart(2,'0');
+  var combustibleDTC=Math.round(tiempoDistHrs*FUEL_CONSUMPTION_LPH);
+  return{combDesp:combDesp,combAter:combAter,combReq:combReq,joker:joker,ttVueloF:formatHMS(ttVueloHrs),autonomiaReserva:formatHMS(autonomiaHrs),pesoComb1:pesoComb1,pesoComb2:pesoComb2,pesoOp1:pesoOp1,pesoOp2:pesoOp2,pesoCargaPax:pesoCargaPax,pesoTotal1:pesoTotal1,pesoTotal2:pesoTotal2,maxOGE1:maxOGE1,maxOGE2:maxOGE2,maxIGE1:maxIGE1,maxIGE2:maxIGE2,apu1:apu1,apu2:apu2,capKg1:maxOGE1?maxOGE1-pesoTotal1:0,capKg2:maxOGE2?maxOGE2-pesoTotal2:0,tMax1:tMax1,tMax2:tMax2,tPrueba1:tPrueba1,tPrueba2:tPrueba2,
+    rpmIdleMin1:ceilLookup1D(plan.temp1,rpmVacioTemps,rpmVacioMin),rpmIdleMax1:ceilLookup1D(plan.temp1,rpmVacioTemps,rpmVacioMax),rpmIdleMin2:ceilLookup1D(plan.temp2,rpmVacioTemps,rpmVacioMin),rpmIdleMax2:ceilLookup1D(plan.temp2,rpmVacioTemps,rpmVacioMax),
+    rpmDespMin1:rc(plan.temp1,rpmMinTable.despegue),rpmDespMax1:rc(plan.temp1,rpmMaxTable.despegue),rpmDespMin2:rc(plan.temp2,rpmMinTable.despegue),rpmDespMax2:rc(plan.temp2,rpmMaxTable.despegue),
+    rpmNomMin1:rc(plan.temp1,rpmMinTable.nominal),rpmNomMax1:rc(plan.temp1,rpmMaxTable.nominal),rpmNomMin2:rc(plan.temp2,rpmMinTable.nominal),rpmNomMax2:rc(plan.temp2,rpmMaxTable.nominal),
+    rpmC1Min1:rc(plan.temp1,rpmMinTable.cruceroI),rpmC1Max1:rc(plan.temp1,rpmMaxTable.cruceroI),rpmC1Min2:rc(plan.temp2,rpmMinTable.cruceroI),rpmC1Max2:rc(plan.temp2,rpmMaxTable.cruceroI),
+    rpmC2Min1:rc(plan.temp1,rpmMinTable.cruceroII),rpmC2Max1:rc(plan.temp1,rpmMaxTable.cruceroII),rpmC2Min2:rc(plan.temp2,rpmMinTable.cruceroII),rpmC2Max2:rc(plan.temp2,rpmMaxTable.cruceroII),
+    rpmEmMin1:rc(plan.temp1,rpmMinTable.emergencia),rpmEmMax1:rc(plan.temp1,rpmMaxTable.emergencia),rpmEmMin2:rc(plan.temp2,rpmMinTable.emergencia),rpmEmMax2:rc(plan.temp2,rpmMaxTable.emergencia),
+    rpmEmRutaMin:rc(plan.tempRuta,rpmMinTable.emergencia),rpmEmRutaMax:rc(plan.tempRuta,rpmMaxTable.emergencia),
+    pesoMaxNivelRuta:ceilingLookup(plan.altRuta,plan.tempRuta,oeiAltitudes,oeiTemperatures,oeiMaxWeightTable),
+    tiempoDistF:tiempoDistF,combustibleDTC:combustibleDTC};
+}
+
+function inp(id,val,key,isNum){return '<input id="'+id+'" type="'+(isNum?'number':'text')+'" value="'+val+'" onchange="plan.'+key+'='+(isNum?'Number(this.value)':'this.value')+';render()">';}
+function pesoStyle(pt,mOGE){if(!mOGE)return'bold-primary';var d=mOGE-pt;if(d<0)return'bg-red';if(d<=200)return'bg-yellow';return'bold-primary';}
+function togglePzu(n){if(n===1)pzu1=!pzu1;else pzu2=!pzu2;render();}
+
+function render(){
+  var c=recalc();
+  var n=function(v){return typeof v==='number'?v.toLocaleString():v;};
+  var h='';
+  h+='<tr><td colspan="7" class="sec" style="padding:6px;font-size:13px">CARTA DE PLANIFICACION Y RENDIMIENTO MI-17</td></tr>';
+  h+='<tr><td class="lbl">TRIPULACION</td><td colspan="6" class="inp">'+inp('trip',plan.tripulacion,'tripulacion',false)+'</td></tr>';
+  h+='<tr><td class="hdr">FECHA</td><td class="hdr">MATRICULA</td><td class="hdr" colspan="2">MISION</td><td class="hdr">H DE DESP.</td><td class="hdr">PZU</td><td class="hdr">COMB. LTS.</td></tr>';
+  h+='<tr><td class="inp">'+inp('fecha',plan.fecha,'fecha',false)+'</td><td class="inp">'+inp('mat',plan.matricula,'matricula',false)+'</td><td class="inp" colspan="2">'+inp('mis',plan.mision,'mision',false)+'</td><td class="inp">'+inp('hd',plan.hDesp,'hDesp',false)+'</td>';
+  h+='<td class="pzu '+(pzu1?'pzu-on':'pzu-off')+'" onclick="togglePzu(1)">'+(pzu1?'SI':'NO')+'</td>';
+  h+='<td class="inp '+(c.combReq>plan.combustibleLts?'bg-red':'')+'">'+inp('comb',plan.combustibleLts,'combustibleLts',true)+'</td></tr>';
+  h+='<tr><td class="hdr">PAX\'s</td><td class="hdr">CARGA</td><td class="hdr">CAP. KG Desp.</td><td class="hdr">CAP. KG Aterr.</td><td class="hdr">H DE ATER.</td><td class="hdr">PZU</td><td class="hdr">COMB. LTS.</td></tr>';
+  var ck1=c.capKg1<=0?'bg-red':c.capKg1<=200?'bg-yellow':'',ck2=c.capKg2<=0?'bg-red':c.capKg2<=200?'bg-yellow':'';
+  h+='<tr><td class="inp">'+inp('pax',plan.pax,'pax',true)+'</td><td class="inp">'+inp('carga',plan.carga,'carga',true)+'</td><td class="val '+ck1+'">'+n(c.capKg1)+'</td><td class="val '+ck2+'">'+n(c.capKg2)+'</td><td class="inp">'+inp('ha',plan.hAter,'hAter',false)+'</td>';
+  h+='<td class="pzu '+(pzu2?'pzu-on':'pzu-off')+'" onclick="togglePzu(2)">'+(pzu2?'SI':'NO')+'</td>';
+  h+='<td class="val '+(c.combAter<0?'bg-red':'')+'">'+c.combAter+'</td></tr>';
+  h+='<tr><td colspan="7" class="sec">ADMINISTRACION DE COMBUSTIBLE</td></tr>';
+  h+='<tr><td class="lbl">COMB DESP</td><td class="val '+(c.combReq>plan.combustibleLts?'bg-red':'')+'">'+c.combDesp+'</td><td class="lbl">T.T. VUELO</td><td class="val">'+c.ttVueloF+'</td><td class="lbl">JOKER (+15 min)</td><td colspan="2" class="val">'+c.joker+'</td></tr>';
+  h+='<tr><td class="lbl">AUTONOMIA - RESERV.</td><td class="val">'+c.autonomiaReserva+'</td><td class="lbl">COMB REQ.</td><td class="val">'+c.combReq+'</td><td class="lbl">BINGO</td><td colspan="2" class="inp">'+inp('bingo',plan.bingo,'bingo',true)+'</td></tr>';
+  h+='<tr><td colspan="7" class="sec">DATOS DE VUELO</td></tr>';
+  h+='<tr><td class="hdr">INDICACION</td><td class="hdr" colspan="2">LUGAR DESP.</td><td class="hdr" colspan="2">LUGAR ATERR.</td><td colspan="2" class="hdr">UNIDAD</td></tr>';
+  h+='<tr><td class="lbl">TEMPERATURA AMBIENTE</td><td class="inp" colspan="2">'+inp('t1',plan.temp1,'temp1',true)+'</td><td class="inp" colspan="2">'+inp('t2',plan.temp2,'temp2',true)+'</td><td colspan="2" class="val">ºC</td></tr>';
+  h+='<tr><td class="lbl">ALT. BARO. (Elevacion)</td><td class="inp" colspan="2">'+inp('a1',plan.alt1,'alt1',true)+'</td><td class="inp" colspan="2">'+inp('a2',plan.alt2,'alt2',true)+'</td><td colspan="2" class="val">FT</td></tr>';
+  var wrows=[['PESO BASICO',plan.pesoBasico1,plan.pesoBasico2,'pesoBasico1','pesoBasico2','KG',true],['PESO TRIP. & EQUIPO',plan.pesoTripEquipo1,plan.pesoTripEquipo2,'pesoTripEquipo1','pesoTripEquipo2','KG',true],['PESO OPERATIVO',c.pesoOp1,c.pesoOp2,'','','KG',false],['PESO COMBUSTIBLE',c.pesoComb1,c.pesoComb2,'','','KG',false],['PESO CARGA / PASAJEROS',c.pesoCargaPax,c.pesoCargaPax,'','','KG',false],['PESO TOTAL DE DESPEGUE',c.pesoTotal1,c.pesoTotal2,'','','KG',false]];
+  for(var i=0;i<wrows.length;i++){var r=wrows[i];var lbl=r[0],v1=r[1],v2=r[2],k1=r[3],k2=r[4],unit=r[5],ed=r[6];
+    var isPT=lbl==='PESO TOTAL DE DESPEGUE';
+    h+='<tr><td class="lbl'+(isPT?' bold-primary':'')+'">'+lbl+'</td>';
+    if(ed){h+='<td colspan="2" class="inp">'+inp('w_'+k1,v1,k1,true)+'</td><td colspan="2" class="inp">'+inp('w_'+k2,v2,k2,true)+'</td>';}
+    else{var s1=isPT?' '+pesoStyle(v1,c.maxOGE1):'',s2=isPT?' '+pesoStyle(v2,c.maxOGE2):'';h+='<td colspan="2" class="val'+s1+'">'+n(v1)+'</td><td colspan="2" class="val'+s2+'">'+n(v2)+'</td>';}
+    h+='<td colspan="2" class="val">'+unit+'</td></tr>';
+  }
+  h+='<tr><td colspan="7" class="sec">LIMITES DE OPERACION NORMAL</td></tr>';
+  h+='<tr><td class="hdr" rowspan="2">INDICACION</td><td class="hdr" colspan="2">LUGAR DESP.</td><td class="hdr" colspan="2">LUGAR ATERR.</td><td colspan="2" class="hdr" rowspan="2">UNIDAD</td></tr>';
+  h+='<tr><td class="hdr">MINIMO</td><td class="hdr">MAXIMO</td><td class="hdr">MINIMO</td><td class="hdr">MAXIMO</td></tr>';
+  function lnk(img,txt){return '<span onclick="openImg(\''+img+'\')" style="color:inherit;text-decoration:underline;cursor:pointer">'+txt+'</span>';}
+  var lrows=[[lnk(IMG.presionApu,'P. NEUMATICA APU'),c.apu1||'N/A','',c.apu2||'N/A','','KGF/CM²'],[lnk(IMG.marchaLenta,'T MAX ARRANQUE MOTORES'),'',c.tMax1,'',c.tMax2,'°C'],[lnk(IMG.tempAceleracion,'T. PRUEBA DE ACELERACION'),'',c.tPrueba1,'',c.tPrueba2,'ºC'],[lnk(IMG.marchaLenta,'RPM MARCHA LENTA'),c.rpmIdleMin1,c.rpmIdleMax1,c.rpmIdleMin2,c.rpmIdleMax2,'nT/C'],[lnk(IMG.regimenes,'RPM DESPEGUE'),c.rpmDespMin1,c.rpmDespMax1,c.rpmDespMin2,c.rpmDespMax2,'nT/C'],[lnk(IMG.regimenes,'RPM NOMINAL/MAX CONT.'),c.rpmNomMin1,c.rpmNomMax1,c.rpmNomMin2,c.rpmNomMax2,'nT/C'],[lnk(IMG.regimenes,'RPM CRUCERO I'),c.rpmC1Min1,c.rpmC1Max1,c.rpmC1Min2,c.rpmC1Max2,'nT/C'],[lnk(IMG.regimenes,'RPM CRUCERO II'),c.rpmC2Min1,c.rpmC2Max1,c.rpmC2Min2,c.rpmC2Max2,'nT/C'],[lnk(IMG.pesoMaxIge,'PESO MAX. IGE'),'',c.maxIGE1?n(c.maxIGE1):'N/A','',c.maxIGE2?n(c.maxIGE2):'N/A','KG'],[lnk(IMG.pesoMaxOge,'PESO MAX. OGE'),'',c.maxOGE1?n(c.maxOGE1):'N/A','',c.maxOGE2?n(c.maxOGE2):'N/A','KG']];
+  for(var i=0;i<lrows.length;i++){var r=lrows[i];h+='<tr><td class="lbl">'+r[0]+'</td><td class="val">'+r[1]+'</td><td class="val">'+r[2]+'</td><td class="val">'+r[3]+'</td><td class="val">'+r[4]+'</td><td colspan="2" class="val">'+r[5]+'</td></tr>';}
+  h+='<tr><td colspan="7" class="sec"><span onclick="openImg(\''+IMG.fallaMotor+'\')" style="color:inherit;text-decoration:underline;cursor:pointer">FALLA DE UN MOTOR (OEI)</span></td></tr>';
+  h+='<tr><td class="hdr" rowspan="2">INDICACION</td><td class="hdr" colspan="2">LUGAR DESP.</td><td class="hdr" colspan="2">LUGAR ATERR.</td><td colspan="2" class="hdr" rowspan="2">UNIDAD</td></tr>';
+  h+='<tr><td class="hdr">MINIMO</td><td class="hdr">MAXIMO</td><td class="hdr">MINIMO</td><td class="hdr">MAXIMO</td></tr>';
+  var oeiRows=[['RPM EMERGENCIA',c.rpmEmMin1,c.rpmEmMax1,c.rpmEmMin2,c.rpmEmMax2,'nT/C'],['PESO MAXIMO ASCENSO','','','','','KG'],['PESO MAXIMO NIVEL','','','','','KG']];
+  for(var i=0;i<oeiRows.length;i++){var r=oeiRows[i];h+='<tr><td class="lbl">'+r[0]+'</td><td class="val">'+r[1]+'</td><td class="val">'+r[2]+'</td><td class="val">'+r[3]+'</td><td class="val">'+r[4]+'</td><td colspan="2" class="val">'+r[5]+'</td></tr>';}
+  h+='<tr><td colspan="7" class="sec"><span onclick="openImg(\''+IMG.fallaMotorRuta+'\')" style="color:inherit;text-decoration:underline;cursor:pointer">FALLA DE UN MOTOR EN RUTA (ALTITUD MAXIMA)</span></td></tr>';
+  h+='<tr><td class="hdr" rowspan="2">INDICACION</td><td class="hdr">ALTITUD</td><td class="inp">'+inp('altR',plan.altRuta,'altRuta',true)+'</td><td class="hdr">TEMP.</td><td class="inp">'+inp('tempR',plan.tempRuta,'tempRuta',true)+'</td><td colspan="2" class="hdr" rowspan="2">UNIDAD</td></tr>';
+  h+='<tr><td colspan="2" class="hdr">MINIMO</td><td colspan="2" class="hdr">MAXIMO</td></tr>';
+  h+='<tr><td class="lbl">RPM EMERGENCIA</td><td colspan="2" class="val">'+c.rpmEmRutaMin+'</td><td colspan="2" class="val">'+c.rpmEmRutaMax+'</td><td colspan="2" class="val">n T/C</td></tr>';
+  h+='<tr><td class="lbl">PESO MAXIMO NIVEL</td><td colspan="2" class="val"></td><td colspan="2" class="val">'+(c.pesoMaxNivelRuta?n(c.pesoMaxNivelRuta):'N/A')+'</td><td colspan="2" class="val">KG</td></tr>';
+  h+='<tr><td colspan="7" class="sec">CALCULO DTC</td></tr>';
+  h+='<tr><td class="lbl">DISTANCIA MN</td><td class="inp">'+inp('dist',plan.distanciaMN,'distanciaMN',true)+'</td><td class="lbl">TIEMPO</td><td class="val">'+c.tiempoDistF+'</td><td class="lbl">COMBUSTIBLE</td><td colspan="2" class="val">'+n(c.combustibleDTC)+' LTS</td></tr>';
+  document.getElementById('tbl').innerHTML=h;
+}
+function openImg(src){var p=document.getElementById('imgPopup');document.getElementById('imgPopupSrc').src=src;p.style.display='flex';}
+render();
+</script>
+
+<!-- ===== SCRIPT DE VOZ ===== -->
+<script>
+/* ============================================================
+   SISTEMA DE ENTRADA POR VOZ - Web Speech API
+   - startVoiceInput(): activa micrófono
+   - parseVoiceCommand(text): detecta campo + valor
+   - setFieldValue(key, value): escribe en input y recalcula
+   ============================================================ */
+
+// --- MAPA DE CAMPOS: clave interna → { planKey, inputId, type, aliases } ---
+var FIELD_MAP = {
+  hora_despegue:        { planKey:'hDesp',          inputId:'hd',              type:'time',   aliases:['hora de despegue','hora despegue','hora salida','hora de salida','hora inicial','salida'] },
+  hora_aterrizaje:      { planKey:'hAter',          inputId:'ha',              type:'time',   aliases:['hora de aterrizaje','hora aterrizaje','hora llegada','hora de llegada','hora final','llegada','arribo'] },
+  combustible_despegue: { planKey:'combustibleLts', inputId:'comb',            type:'number', aliases:['combustible de despegue','combustible despegue','combustible salida','combustible inicial','fuel salida','fuel inicial','combustible al salir','combustible'] },
+  temperatura_despegue: { planKey:'temp1',          inputId:'t1',              type:'number', aliases:['temperatura de despegue','temperatura despegue','temperatura origen','temperatura salida','temperatura ambiente despegue','temperatura ambiente de despegue','temperatura inicial','temp despegue','temp de despegue','temp origen','temp salida','temperatura en origen','en origen'] },
+  temperatura_aterrizaje:{planKey:'temp2',          inputId:'t2',              type:'number', aliases:['temperatura de aterrizaje','temperatura aterrizaje','temperatura destino','temperatura llegada','temperatura ambiente aterrizaje','temperatura ambiente de aterrizaje','temperatura final','temp aterrizaje','temp de aterrizaje','temp destino','temp llegada','temperatura en destino','en destino'] },
+  elevacion_despegue:   { planKey:'alt1',           inputId:'a1',              type:'number', aliases:['altitud barometrica de despegue','altitud barometrica despegue','altitud barométrica de despegue','altitud barométrica despegue','elevacion de despegue','elevacion despegue','elevación de despegue','elevación despegue','elevacion origen','elevación origen','altitud de despegue','altitud despegue','altitud salida','altitud de salida','altura de despegue','altura despegue','altura de salida','altura salida','altura origen','elevacion inicial','elevación inicial'] },
+  elevacion_aterrizaje: { planKey:'alt2',           inputId:'a2',              type:'number', aliases:['altitud barometrica de aterrizaje','altitud barometrica aterrizaje','altitud barométrica de aterrizaje','altitud barométrica aterrizaje','elevacion de aterrizaje','elevacion aterrizaje','elevación de aterrizaje','elevación aterrizaje','elevacion destino','elevación destino','altitud de aterrizaje','altitud aterrizaje','altitud llegada','altitud de llegada','altura de aterrizaje','altura aterrizaje','altura de llegada','altura llegada','altura destino','elevacion final','elevación final'] },
+  peso_basico_despegue: { planKey:'pesoBasico1',    mirrorKey:'pesoBasico2',    inputId:'w_pesoBasico1',   type:'number', aliases:['peso basico de despegue','peso basico despegue','peso básico de despegue','peso básico despegue','peso basico','peso básico','peso vacio','peso vacío','peso helicoptero','peso helicóptero'] },
+  peso_tripulacion:     { planKey:'pesoTripEquipo1',mirrorKey:'pesoTripEquipo2',inputId:'w_pesoTripEquipo1',type:'number',aliases:['peso de tripulacion y equipo','peso tripulacion y equipo','peso tripulación y equipo','peso de tripulación y equipo','peso de tripulacion','peso tripulacion','peso tripulación','peso de tripulación','peso equipo','tripulacion y equipo','tripulación y equipo','tripulacion','tripulación'] },
+  bingo:                { planKey:'bingo',          inputId:'bingo',           type:'number', aliases:['bingo'] },
+  distancia:            { planKey:'distanciaMN',    inputId:'dist',            type:'number', aliases:['distancia millas nauticas','distancia millas','distancia mn','distancia'] },
+  pax:                  { planKey:'pax',            inputId:'pax',             type:'number', aliases:['pasajeros','paxes','pax'] },
+  carga:                { planKey:'carga',          inputId:'carga',           type:'number', aliases:['carga'] }
+};
+
+// --- CAMPOS BLOQUEADOS (calculados automáticamente, ignorar por voz) ---
+var BLOCKED_FIELDS = [
+  'combustible de aterrizaje','combustible aterrizaje','combustible llegada','fuel aterrizaje','fuel llegada',
+  'peso combustible','peso de combustible','peso del combustible',
+  'peso carga','peso pasajeros','peso de carga','peso de pasajeros','peso carga pasajeros','peso carga y pasajeros'
+];
+
+// --- DICCIONARIO NUMÉRICO ESPAÑOL ---
+var WORD_NUMS = {
+  'cero':0,'uno':1,'una':1,'dos':2,'tres':3,'cuatro':4,'cinco':5,'seis':6,'siete':7,'ocho':8,'nueve':9,
+  'diez':10,'once':11,'doce':12,'trece':13,'catorce':14,'quince':15,
+  'dieciseis':16,'dieciséis':16,'diecisiete':17,'dieciocho':18,'diecinueve':19,
+  'veinte':20,'veintiuno':21,'veintidos':22,'veintidós':22,'veintitres':23,'veintitrés':23,
+  'veinticuatro':24,'veinticinco':25,'veintiseis':26,'veintiséis':26,'veintisiete':27,'veintiocho':28,'veintinueve':29,
+  'treinta':30,'cuarenta':40,'cincuenta':50
+};
+
+// Convierte texto hablado en número entero. Ej: "dos mil quinientos" → 2500
+function parseSpokenNumber(text) {
+  text = text.trim().toLowerCase();
+  var direct = Number(text);
+  if (!isNaN(direct) && text !== '') return direct;
+
+  var negative = false;
+  if (text.startsWith('menos ')) { negative = true; text = text.substring(6).trim(); }
+
+  var parts = text.split(/\s+/);
+  var total = 0, current = 0;
+
+  for (var i = 0; i < parts.length; i++) {
+    var w = parts[i];
+    if (w === 'y') continue;
+    if (w === 'mil') {
+      current = current === 0 ? 1000 : current * 1000;
+      total += current; current = 0;
+    } else if (w === 'cien' || w === 'ciento') {
+      current = current === 0 ? 100 : current * 100;
+    } else if (w === 'doscientos' || w === 'doscientas') { current += 200;
+    } else if (w === 'trescientos' || w === 'trescientas') { current += 300;
+    } else if (w === 'cuatrocientos' || w === 'cuatrocientas') { current += 400;
+    } else if (w === 'quinientos' || w === 'quinientas') { current += 500;
+    } else if (w === 'seiscientos' || w === 'seiscientas') { current += 600;
+    } else if (w === 'setecientos' || w === 'setecientas') { current += 700;
+    } else if (w === 'ochocientos' || w === 'ochocientas') { current += 800;
+    } else if (w === 'novecientos' || w === 'novecientas') { current += 900;
+    } else if (WORD_NUMS[w] !== undefined) {
+      current += WORD_NUMS[w];
+    } else {
+      var n = Number(w);
+      if (!isNaN(n)) current += n;
+    }
+  }
+  total += current;
+  return negative ? -total : total;
+}
+
+// Convierte texto hablado en formato hora HH:MM. Ej: "cero seis treinta" → "06:30"
+function parseSpokenTime(text) {
+  text = text.trim().toLowerCase();
+  if (/^\d{1,2}:\d{2}$/.test(text)) return text;
+
+  // Correcciones comunes de reconocimiento de voz
+  text = text.replace(/\bsies\b/g, 'seis');
+
+  var parts = text.split(/\s+/);
+  var nums = [];
+  for (var i = 0; i < parts.length; i++) {
+    var w = parts[i];
+    if (w === 'y' || w === 'horas' || w === 'hora') continue;
+    if (WORD_NUMS[w] !== undefined) nums.push(WORD_NUMS[w]);
+    else { var n = parseInt(w); if (!isNaN(n)) nums.push(n); }
+  }
+
+  if (nums.length === 0) return null;
+  var hours, minutes;
+  if (nums.length === 1) {
+    // "cuatro" → 04:00
+    hours = nums[0]; minutes = 0;
+  } else if (nums.length === 2) {
+    // "cuatro quince" → 04:15, "cuatro treinta" → 04:30
+    hours = nums[0]; minutes = nums[1];
+  } else if (nums.length === 3) {
+    // "cuatro cero cero" → [4,0,0] → 04:00
+    // "cero cuatro quince" → [0,4,15] → 04:15
+    if (nums[1] === 0 && nums[2] === 0) { hours = nums[0]; minutes = 0; }
+    else if (nums[0] === 0) { hours = nums[1]; minutes = nums[2]; }
+    else { hours = nums[0]; minutes = nums[1] * 10 + nums[2]; }
+  } else if (nums.length === 4) {
+    // "cero cuatro cero cero" → [0,4,0,0] → 04:00
+    // "cero cuatro uno cinco" → [0,4,1,5] → 04:15
+    hours = nums[0] * 10 + nums[1]; minutes = nums[2] * 10 + nums[3];
+  } else {
+    // 5+ nums: tomar primeros 4
+    hours = nums[0] * 10 + nums[1]; minutes = nums[2] * 10 + nums[3];
+  }
+  if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) return null;
+  return String(hours).padStart(2,'0') + ':' + String(minutes).padStart(2,'0');
+}
+
+// --- NORMALIZAR TEXTO: quitar acentos y puntuación ---
+function normalizeVoiceText(text) {
+  return text.toLowerCase().replace(/[.,;!?¿¡]/g,'')
+    .replace(/á/g,'a').replace(/é/g,'e').replace(/í/g,'i').replace(/ó/g,'o').replace(/ú/g,'u').trim();
+}
+
+// --- VERIFICAR SI EL TEXTO CONTIENE CAMPOS BLOQUEADOS ---
+function findBlockedMentions(normalizedText) {
+  var found = [];
+  for (var i = 0; i < BLOCKED_FIELDS.length; i++) {
+    var bl = normalizeVoiceText(BLOCKED_FIELDS[i]);
+    if (normalizedText.indexOf(bl) !== -1) found.push(BLOCKED_FIELDS[i]);
+  }
+  return found;
+}
+
+// --- LIMPIAR RUIDO DEL TEXTO ANTES DE BUSCAR ALIAS ---
+function cleanVoiceNoise(text) {
+  // Quitar preposiciones/artículos sueltos que no forman parte de alias
+  // pero NO quitar "de","en","y","a","las","los","al","con" porque forman parte de alias como "hora de despegue"
+  // Solo quitar frases de relleno comunes
+  text = text.replace(/\bsalimos\b/g, '');
+  text = text.replace(/\btenemos\b/g, '');
+  text = text.replace(/\bcon un\b/g, ' con ');
+  text = text.replace(/\ba las\b/g, ' ');
+  text = text.replace(/\bgrados\b/g, '');
+  text = text.replace(/\bpies\b/g, '');
+  text = text.replace(/\bkilos\b/g, '');
+  text = text.replace(/\bkilogramos\b/g, '');
+  text = text.replace(/\blitros\b/g, '');
+  text = text.replace(/\bde combustible\b/g, ' combustible ');
+  text = text.replace(/\bde temperatura\b/g, ' temperatura ');
+  text = text.replace(/\s+/g, ' ').trim();
+  return text;
+}
+
+// --- ENCONTRAR TODAS LAS COINCIDENCIAS DE CAMPOS EN EL TEXTO ---
+function findAllFieldMatches(normalizedText) {
+  var matches = [];
+  var keys = Object.keys(FIELD_MAP);
+  for (var k = 0; k < keys.length; k++) {
+    var field = FIELD_MAP[keys[k]];
+    var bestAlias = '', bestPos = -1;
+    for (var a = 0; a < field.aliases.length; a++) {
+      var alias = normalizeVoiceText(field.aliases[a]);
+      var idx = normalizedText.indexOf(alias);
+      if (idx !== -1 && alias.length > bestAlias.length) {
+        bestAlias = alias;
+        bestPos = idx;
+      }
+    }
+    if (bestPos !== -1) {
+      matches.push({ key: keys[k], alias: bestAlias, position: bestPos, aliasLength: bestAlias.length });
+    }
+  }
+  // Eliminar alias cortos contenidos dentro de uno largo (priorizar alias más largos)
+  matches = matches.filter(function(m) {
+    for (var i = 0; i < matches.length; i++) {
+      var o = matches[i];
+      if (o === m) continue;
+      // Si m está contenido dentro de o y o es más largo, eliminar m
+      if (m.position >= o.position && (m.position + m.aliasLength) <= (o.position + o.aliasLength) && o.aliasLength > m.aliasLength) return false;
+      // Si dos alias empiezan en la misma posición, mantener el más largo
+      if (m.position === o.position && o.aliasLength > m.aliasLength) return false;
+    }
+    return true;
+  });
+  matches.sort(function(a, b) { return a.position - b.position; });
+  return matches;
+}
+
+// --- SEGMENTAR TEXTO EN PARES campo->valor ---
+function splitIntoCommandSegments(normalizedText, matches) {
+  var segments = [];
+  for (var i = 0; i < matches.length; i++) {
+    var m = matches[i];
+    var valueStart = m.position + m.aliasLength;
+    var valueEnd = (i + 1 < matches.length) ? matches[i + 1].position : normalizedText.length;
+    var valueText = normalizedText.substring(valueStart, valueEnd).trim();
+    // Limpiar conectores al inicio del valor: "con", "de", "a", "es", "igual a"
+    valueText = valueText.replace(/^(con|de|a|es|igual a|igual)\s+/i, '').trim();
+    segments.push({ key: m.key, alias: m.alias, valueText: valueText });
+  }
+  return segments;
+}
+
+// --- PARSEAR VALOR DE UN SEGMENTO ---
+function parseSegmentValue(segment) {
+  var field = FIELD_MAP[segment.key];
+  if (!segment.valueText) return { error: 'Campo "' + segment.alias + '" detectado, pero falta el valor.' };
+  if (field.type === 'time') {
+    var tv = parseSpokenTime(segment.valueText);
+    return tv ? { value: tv } : { error: 'No se pudo interpretar la hora: "' + segment.valueText + '"' };
+  } else {
+    var nv = parseSpokenNumber(segment.valueText);
+    return isNaN(nv) ? { error: 'No se pudo interpretar el numero: "' + segment.valueText + '"' } : { value: nv };
+  }
+}
+
+// --- PARSEO MULTI-COMANDO: detecta uno o varios campos ---
+function parseMultiVoiceCommand(text) {
+  var normalized = normalizeVoiceText(text);
+  // Verificar campos bloqueados
+  var blocked = findBlockedMentions(normalized);
+  // Limpiar ruido para mejorar detección
+  var cleaned = cleanVoiceNoise(normalized);
+  var matches = findAllFieldMatches(cleaned);
+  // Si no hay matches en el texto limpio, intentar con el original normalizado
+  if (matches.length === 0) matches = findAllFieldMatches(normalized);
+  if (matches.length === 0) {
+    var errMsg = 'No se identifico ningun campo. Diga el nombre del campo seguido del valor.';
+    if (blocked.length > 0) errMsg += ' (Campos bloqueados mencionados: ' + blocked.join(', ') + ' — estos son calculados automaticamente)';
+    return { success: [], errors: [{ error: errMsg }] };
+  }
+  var segments = splitIntoCommandSegments(cleaned.length >= normalized.length ? cleaned : (findAllFieldMatches(cleaned).length >= matches.length ? cleaned : normalized), matches);
+  var success = [], errors = [];
+  for (var i = 0; i < segments.length; i++) {
+    var parsed = parseSegmentValue(segments[i]);
+    if (parsed.error) errors.push({ alias: segments[i].alias, error: parsed.error });
+    else success.push({ key: segments[i].key, alias: segments[i].alias, value: parsed.value });
+  }
+  if (blocked.length > 0) {
+    errors.push({ alias: 'bloqueado', error: '⚠ Campos ignorados (calculados automaticamente): ' + blocked.join(', ') });
+  }
+  return { success: success, errors: errors };
+}
+
+// --- APLICAR TODOS LOS COMANDOS ---
+function applyParsedCommands(commands) {
+  for (var i = 0; i < commands.length; i++) {
+    var field = FIELD_MAP[commands[i].key];
+    var v = field.type === 'number' ? Number(commands[i].value) : String(commands[i].value);
+    plan[field.planKey] = v;
+    if (field.mirrorKey) plan[field.mirrorKey] = v;
+  }
+  render();
+}
+
+// --- ESCRIBIR VALOR Y RECALCULAR ---
+function setFieldValue(fieldKey, value) {
+  var field = FIELD_MAP[fieldKey];
+  if (!field) return false;
+  var v = field.type === 'number' ? Number(value) : String(value);
+  plan[field.planKey] = v;
+  // Si tiene mirrorKey, copiar el valor a la columna espejo (aterrizaje)
+  if (field.mirrorKey) plan[field.mirrorKey] = v;
+  render(); // recalcula y re-renderiza todo
+  return true;
+}
+
+// --- UI DE VOZ ---
+function updateVoiceUI(status, dotClass, text, result) {
+  document.getElementById('voicePanel').style.display = 'block';
+  document.getElementById('voiceStatus').textContent = status;
+  document.getElementById('voiceDot').className = dotClass || '';
+  if (text !== undefined) document.getElementById('voiceText').textContent = text;
+  if (result !== undefined) {
+    var el = document.getElementById('voiceResult');
+    el.innerHTML = result;
+    el.style.color = status.indexOf('✅') !== -1 ? '#4ade80' : (status.indexOf('❌') !== -1 ? '#ef4444' : '#4ade80');
+  }
+}
+
+// --- Flasheo de campos capturables por voz ---
+function setVoiceFlash(active) {
+  var keys = Object.keys(FIELD_MAP);
+  for (var i = 0; i < keys.length; i++) {
+    var el = document.getElementById(FIELD_MAP[keys[i]].inputId);
+    if (el && el.parentElement) {
+      if (active) el.parentElement.classList.add('voice-flash-active');
+      else el.parentElement.classList.remove('voice-flash-active');
+    }
+  }
+}
+
+function startVoiceInput() {
+  var SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SR) {
+    updateVoiceUI('⚠ No soportado', '', '—', 'Tu navegador no soporta voz. Usa Chrome o Edge.');
+    return;
+  }
+  var rec = new SR();
+  rec.lang = 'es-MX';
+  rec.interimResults = false;
+  rec.maxAlternatives = 3;
+  rec.continuous = true;
+
+  var voiceTimeout = null;
+  var finalTranscript = '';
+  function resetVoiceTimeout() {
+    if (voiceTimeout) clearTimeout(voiceTimeout);
+    voiceTimeout = setTimeout(function() { rec.stop(); }, 8000);
+  }
+
+  updateVoiceUI('🔴 Escuchando... (puede dictar varios campos)', 'dot-listening', '—', '—');
+  var btn = document.getElementById('btnVoz');
+  btn.disabled = true; btn.textContent = '🎤 Escuchando...';
+  setVoiceFlash(true);
+
+  function stopFlashAndReset() {
+    if (voiceTimeout) clearTimeout(voiceTimeout);
+    setVoiceFlash(false);
+    btn.disabled = false; btn.textContent = '🎤 Ingresar por voz';
+  }
+
+  function processTranscript(t) {
+    updateVoiceUI('Procesando...', '', '"' + t + '"', '—');
+    var result = parseMultiVoiceCommand(t);
+    if (result.success.length === 0 && result.errors.length > 0) {
+      var errMsg = result.errors.map(function(e) { return e.error; }).join('<br>');
+      updateVoiceUI('❌ Error', '', '"' + t + '"', errMsg);
+    } else {
+      applyParsedCommands(result.success);
+      var summary = '';
+      if (result.success.length > 0) {
+        summary += '<b>✅ Actualizados (' + result.success.length + '):</b><br>';
+        for (var i = 0; i < result.success.length; i++) {
+          summary += '• ' + result.success[i].alias + ' → ' + result.success[i].value + '<br>';
+        }
+      }
+      if (result.errors.length > 0) {
+        summary += '<b style="color:#ef4444">⚠ No interpretados:</b><br>';
+        for (var j = 0; j < result.errors.length; j++) {
+          summary += '• ' + result.errors[j].error + '<br>';
+        }
+      }
+      updateVoiceUI(result.errors.length > 0 ? '⚠ Parcial' : '✅ Listo', '', '"' + t + '"', summary);
+    }
+  }
+
+  rec.onresult = function(e) {
+    /* Acumular todos los resultados finales del modo continuous */
+    finalTranscript = '';
+    for (var i = 0; i < e.results.length; i++) {
+      if (e.results[i].isFinal) {
+        finalTranscript += ' ' + e.results[i][0].transcript;
+      }
+    }
+    finalTranscript = finalTranscript.trim();
+    updateVoiceUI('🔴 Escuchando...', 'dot-listening', '"' + finalTranscript + '"', 'Sigo escuchando… hable o espere para procesar.');
+    resetVoiceTimeout();
+  };
+  rec.onerror = function(e) {
+    var m = e.error === 'no-speech' ? 'No se detectó voz.' : e.error === 'not-allowed' ? 'Permiso de micrófono denegado.' : 'Error: ' + e.error;
+    if (e.error === 'no-speech' && finalTranscript) {
+      processTranscript(finalTranscript);
+    } else {
+      updateVoiceUI('❌ ' + m, '', '—', m);
+    }
+    stopFlashAndReset();
+  };
+  rec.onend = function() {
+    if (finalTranscript) {
+      processTranscript(finalTranscript);
+    }
+    stopFlashAndReset();
+  };
+  resetVoiceTimeout();
+  rec.start();
+}
+</script>
+<script src="https://cdn.gpteng.co/lovable.js" type="module"></script>
+<aside 
+	id="lovable-badge" 
+	role="complementary"
+	dir="ltr"
+	lang="en"
+	aria-label="Edit with Lovable">
+	<a 
+		id="lovable-badge-cta" 
+		target="_blank" 
+		href="https://lovable.dev/projects/eef94533-9b5a-421e-b022-a3fdc61eb3e1?utm_source=lovable-badge"
+		rel="noopener"
+		aria-label="Edit with Lovable">
+		<span id="lovable-badge-text">Edit with</span>
+		<svg xmlns="http://www.w3.org/2000/svg" width="52" height="16" fill="none" viewBox="0 0 52 16">
+  <path fill="#FCFBF8" fill-rule="evenodd" d="M20.318 5.25c.643 0 1.206.14 1.69.418a2.81 2.81 0 0 1 1.118 1.191c.266.513.4 1.115.4 1.807s-.134 1.296-.4 1.812a2.81 2.81 0 0 1-1.118 1.193c-.484.278-1.047.418-1.69.418s-1.208-.14-1.695-.418a2.85 2.85 0 0 1-1.125-1.193c-.262-.516-.393-1.12-.393-1.812s.131-1.294.393-1.807a2.848 2.848 0 0 1 1.125-1.191c.487-.279 1.052-.418 1.695-.418Zm0 1.425c-.27 0-.504.076-.7.228-.193.147-.34.37-.443.67-.102.295-.153.66-.153 1.093 0 .435.05.801.153 1.1.102.3.25.524.443.676.196.147.43.22.7.22.27 0 .502-.073.694-.22.193-.152.341-.375.443-.67.103-.299.153-.667.153-1.106 0-.65-.112-1.145-.337-1.481a1.08 1.08 0 0 0-.953-.51ZM32.7 5.25c.61 0 1.127.1 1.549.3.422.197.74.48.953.849.217.368.325.809.325 1.32v2.704c0 .29.02.562.062.812.044.245.108.4.19.466V12h-1.935a5.895 5.895 0 0 1-.105-.684 7.745 7.745 0 0 1-.02-.228 2.293 2.293 0 0 1-.151.203c-.205.242-.47.437-.793.584-.32.143-.685.215-1.094.215-.406 0-.77-.08-1.094-.24a1.845 1.845 0 0 1-.756-.682 1.984 1.984 0 0 1-.27-1.045c0-.606.178-1.069.535-1.388.356-.324.87-.534 1.542-.633l1.125-.16c.225-.032.403-.074.534-.123a.622.622 0 0 0 .288-.196.549.549 0 0 0 .093-.327.65.65 0 0 0-.11-.367.702.702 0 0 0-.32-.27c-.14-.07-.31-.105-.51-.105-.32 0-.576.083-.768.251-.193.164-.298.39-.314.676h-1.923c.016-.434.147-.82.393-1.155.25-.34.596-.604 1.039-.792.442-.189.954-.283 1.535-.283Zm.99 3.498a.98.98 0 0 1-.215.14 2.49 2.49 0 0 1-.584.178l-.473.092c-.315.061-.553.156-.713.283-.155.127-.233.305-.233.534 0 .23.084.412.252.547.168.135.383.203.645.203s.494-.058.694-.173c.201-.118.355-.282.461-.49.11-.21.166-.448.166-.714v-.6Zm4.526-2.375c.065-.125.138-.243.221-.349.197-.25.437-.44.719-.571.282-.135.6-.203.952-.203.528 0 .988.138 1.377.412.389.275.688.67.896 1.186.21.512.314 1.12.314 1.824 0 .7-.107 1.309-.32 1.825-.213.512-.518.906-.915 1.18-.393.275-.854.412-1.383.412-.352 0-.667-.062-.946-.184a1.832 1.832 0 0 1-.7-.554 2.2 2.2 0 0 1-.234-.383V12h-1.843V3h1.862v3.373Zm1.284.296c-.274 0-.51.085-.707.253-.192.163-.338.397-.436.7a3.376 3.376 0 0 0-.148 1.05c0 .406.05.759.148 1.058.098.299.243.53.436.694.197.164.433.246.707.246.279 0 .512-.082.7-.246.193-.164.336-.395.43-.694.099-.3.148-.652.148-1.058 0-.405-.05-.757-.147-1.056-.095-.299-.238-.53-.43-.694a1.015 1.015 0 0 0-.7-.253Zm9.416-1.419c.602 0 1.136.131 1.604.393.466.262.829.643 1.086 1.143.263.5.394 1.097.394 1.794 0 .25-.002.449-.006.596H47.51c.018.288.071.538.164.75a1.3 1.3 0 0 0 .491.596c.214.13.465.196.757.196.319 0 .583-.082.792-.246.209-.167.34-.403.393-.706h1.862a2.48 2.48 0 0 1-.485 1.235 2.54 2.54 0 0 1-1.051.805c-.439.188-.949.283-1.53.283-.655 0-1.225-.125-1.708-.375a2.672 2.672 0 0 1-1.13-1.143c-.267-.508-.4-1.137-.4-1.887 0-.712.14-1.327.418-1.843a2.86 2.86 0 0 1 1.155-1.186c.491-.27 1.051-.405 1.678-.405Zm-.044 1.345c-.274 0-.516.068-.725.203a1.29 1.29 0 0 0-.479.59 2.045 2.045 0 0 0-.132.498h2.562a1.873 1.873 0 0 0-.138-.602 1.061 1.061 0 0 0-.418-.516 1.243 1.243 0 0 0-.67-.173Z" clip-rule="evenodd"/>
+  <path fill="#FCFBF8" d="m26.605 9.995 1.342-4.566h1.924L27.628 12h-2.07l-2.33-6.57h1.98l1.397 4.565Zm-13.013.143h2.256c1.632 0 1.421 1.837 1.418 1.861h-5.603V3h1.93v7.138Zm31.516 1.861h-1.862V3h1.862v8.999Z"/>
+  <path fill="url(#a)" fill-rule="evenodd" d="M2.7 3c1.492 0 2.7 1.192 2.7 2.663v1.012h.9c1.49 0 2.7 1.192 2.7 2.662S7.791 12 6.3 12H0V5.663C0 4.193 1.209 3 2.7 3Z" clip-rule="evenodd"/>
+  <defs>
+    <radialGradient id="a" cx="0" cy="0" r="1" gradientTransform="matrix(-1.54236 7.07838 -10.231 -2.15602 4.627 5.022)" gradientUnits="userSpaceOnUse">
+      <stop offset=".106" stop-color="#FE7B02"/>
+      <stop offset=".394" stop-color="#FE3F21"/>
+      <stop offset=".608" stop-color="#F858BC"/>
+      <stop offset=".929" stop-color="#575ECF"/>
+    </radialGradient>
+  </defs>
+</svg>
+
+
+	</a>
+	
+	<span id="lovable-badge-divider" aria-hidden="true"></span>
+	
+	<button 
+		id="lovable-badge-close"
+		aria-label="Dismiss"
+		title="Dismiss"
+		type="button">
+		<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 16 16" aria-hidden="true">
+			<path d="M10.646 4.646a.5.5 0 1 1 .707.708L8.707 8l2.646 2.646a.5.5 0 1 1-.707.707L8 8.707l-2.646 2.646a.5.5 0 1 1-.708-.707L7.293 8 4.646 5.354a.5.5 0 1 1 .708-.708L8 7.293l2.646-2.647Z"/>
+		</svg>
+	</button>
+</aside>
+<script>
+	// Don't show the lovable-badge if the page is in an iframe or if it's being rendered by puppeteer (screenshot service)
+	if (window.self !== window.top || navigator.userAgent.includes('puppeteer')) {
+		// the page is in an iframe
+		var badge = document.getElementById('lovable-badge');
+		if (badge) {
+			badge.style.display = 'none';
+		}
+	}
+
+	// Add click event listener to close button with animation
+	var closeButton = document.getElementById('lovable-badge-close');
+	if (closeButton) {
+		closeButton.addEventListener('click', function(event) {
+			event.preventDefault();
+			event.stopPropagation();
+			var badge = document.getElementById('lovable-badge');
+			if (badge) {
+				badge.classList.add('closing');
+				setTimeout(function() {
+					if (badge) {
+						badge.style.display = 'none';
+					}
+				}, 240);
+			}
+		});
+	}
+</script>
+</body>
+</html>
